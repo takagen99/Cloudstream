@@ -8,7 +8,7 @@
 
 
 **DOWNLOAD:**
-https://github.com/KillerDogeEmpire/CloudStream-3/releases
+https://github.com/KillerDogeEmpire/Cloudstream/releases
 
 
 ***Features:***
