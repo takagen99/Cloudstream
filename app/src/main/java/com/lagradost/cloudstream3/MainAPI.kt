@@ -187,7 +187,6 @@ object APIHolder {
             Pandamovie(),
 
             // No stream links fetched
-            JavTubeWatch(),
             JavFreeSh(),
             JavGuru(),
             HpJavTv(),
