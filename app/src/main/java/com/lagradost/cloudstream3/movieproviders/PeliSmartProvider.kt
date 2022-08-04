@@ -104,12 +104,12 @@ class PeliSmartProvider: MainAPI() {
             val isValid = seasonid?.size == 2
             val episode = if (isValid) seasonid?.getOrNull(1) else null
             val season = if (isValid) seasonid?.getOrNull(0) else null
-            Episode(
-                href,
-                name,
-                season,
-                episode,
-            )
+                Episode(
+                    href,
+                    name,
+                    season,
+                    episode,
+                )
         }
         return when (val tvType = if (episodes.isEmpty()) TvType.Movie else TvType.TvSeries) {
             TvType.TvSeries -> {
