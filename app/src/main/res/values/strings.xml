@@ -149,7 +149,7 @@
     <string name="app_dubbed_text">Dubbed</string>
     <string name="app_subbed_text">Subbed</string>
     <string name="app_premium_dubbed_text">Dubbed (Premium)</string>
-    <string name="app_premium_subbed_text">Subbbed (Premium)</string>
+    <string name="app_premium_subbed_text">Subbed (Premium)</string>
 
     <string name="popup_delete_file">Delete File</string>
     <string name="popup_play_file">Play File</string>
