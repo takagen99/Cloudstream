@@ -104,12 +104,12 @@ class PeliSmartProvider: MainAPI() {
             val isValid = seasonid?.size == 2
             val episode = if (isValid) seasonid?.getOrNull(1) else null
             val season = if (isValid) seasonid?.getOrNull(0) else null
-                Episode(
-                    href,
-                    name,
-                    season,
-                    episode,
-                )
+            Episode(
+                href,
+                name,
+                season,
+                episode,
+            )
         }
         return when (val tvType = if (episodes.isEmpty()) TvType.Movie else TvType.TvSeries) {
             TvType.TvSeries -> {
@@ -146,15 +146,15 @@ class PeliSmartProvider: MainAPI() {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         val soup = app.get(data).text
-         fetchUrls(soup).apmap {
-             val urlc = it.replace("https://pelismart.com/p/1.php?v=","https://evoload.io/e/")
-             .replace("https://pelismart.com/p/2.php?v=","https://streamtape.com/e/")
-             .replace("https://pelismart.com/p/4.php?v=","https://dood.to/e/")
-             .replace("https://pelismarthd.com/p/1.php?v=","https://evoload.io/e/")
-             .replace("https://pelismarthd.com/p/2.php?v=","https://streamtape.com/e/")
-             .replace("https://pelismarthd.com/p/4.php?v=","https://dood.to/e/")
-             loadExtractor(urlc, data, subtitleCallback, callback)
-         }
+        fetchUrls(soup).apmap {
+            val urlc = it.replace("https://pelismart.com/p/1.php?v=","https://evoload.io/e/")
+                .replace("https://pelismart.com/p/2.php?v=","https://streamtape.com/e/")
+                .replace("https://pelismart.com/p/4.php?v=","https://dood.to/e/")
+                .replace("https://pelismarthd.com/p/1.php?v=","https://evoload.io/e/")
+                .replace("https://pelismarthd.com/p/2.php?v=","https://streamtape.com/e/")
+                .replace("https://pelismarthd.com/p/4.php?v=","https://dood.to/e/")
+            loadExtractor(urlc, data, subtitleCallback, callback)
+        }
         return true
     }
 }

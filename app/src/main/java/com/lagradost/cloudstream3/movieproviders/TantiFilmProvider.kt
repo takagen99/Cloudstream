@@ -162,8 +162,8 @@ class TantifilmProvider : MainAPI() {
             val actors: List<ActorData>? = if (Linkactor.isNotEmpty()) {
                 val actorpage = app.get(Linkactor + "cast/").document
                 actorpage.select("article.membro-cast").filter {
-                    it -> it.selectFirst("img")
-                        ?.attr("src") != "https://www.filmtv.it/imgbank/DUMMY/no_portrait.jpg"
+                        it -> it.selectFirst("img")
+                    ?.attr("src") != "https://www.filmtv.it/imgbank/DUMMY/no_portrait.jpg"
                 }.mapNotNull {
                     val name = it.selectFirst("div.info > h3")!!.text()
                     val image = it.selectFirst("img")?.attr("src")

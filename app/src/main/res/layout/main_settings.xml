@@ -99,6 +99,21 @@
                     android:text="@string/category_account" />
 
             <TextView
+                android:id="@+id/settings_providers"
+
+                style="@style/SettingsItem"
+                android:nextFocusUp="@id/settings_credits"
+                android:nextFocusDown="@id/settings_about"
+                android:text="@string/category_providers" />
+
+            <TextView
+                android:id="@+id/settings_about"
+
+                style="@style/SettingsItem"
+                android:nextFocusUp="@id/settings_providers"
+                android:text="@string/category_about" />
+
+            <TextView
                     android:padding="10dp"
                     android:gravity="center"
                     android:layout_gravity="center"

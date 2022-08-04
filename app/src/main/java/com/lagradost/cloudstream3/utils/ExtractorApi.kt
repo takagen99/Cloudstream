@@ -234,8 +234,16 @@ val extractorApis: Array<ExtractorApi> = arrayOf(
     Streamhub2(),
     Ssbstream(),
 
+    Videobin(),
+    Videobin1(),
+
+    Sendvid(),
+    Sendvid1(),
+
     FEmbed(),
     FeHD(),
+    Femax20(),
+    Suzihaza(),
     Fplayer(),
     DBfilm(),
     Luxubu(),
@@ -282,7 +290,9 @@ val extractorApis: Array<ExtractorApi> = arrayOf(
     //  SBPlay1(),
     //  SBPlay2(),
 
-    PlayerVoxzer(),
+    //Nsfw extractors
+    PlayLtXyz(),
+    JKhentaiExtractor(),
 
     BullStream(),
     GMPlayer(),

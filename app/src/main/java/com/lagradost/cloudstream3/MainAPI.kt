@@ -14,6 +14,7 @@ import com.lagradost.cloudstream3.animeproviders.*
 import com.lagradost.cloudstream3.liveproviders.EjaTv
 import com.lagradost.cloudstream3.metaproviders.CrossTmdbProvider
 import com.lagradost.cloudstream3.movieproviders.*
+import com.lagradost.cloudstream3.providersnsfw.*
 import com.lagradost.cloudstream3.mvvm.logError
 import com.lagradost.cloudstream3.syncproviders.AccountManager.Companion.aniListApi
 import com.lagradost.cloudstream3.syncproviders.AccountManager.Companion.malApi
@@ -112,6 +113,7 @@ object APIHolder {
             DubokuProvider(),
             KisskhProvider(),
 
+
             // Metadata providers
             //TmdbProvider(),
             CrossTmdbProvider(),
@@ -156,7 +158,40 @@ object APIHolder {
             AniflixProvider(),
             KimCartoonProvider(),
             XcineProvider(),
-            SuperStream()
+
+            // Additional anime providers
+            KrunchyProvider(),
+
+            // Additional movie providers
+            ComamosRamenProvider(),
+            ElifilmsProvider(),
+            EstrenosDoramasProvider(),
+            FmoviesAPPProvider(),
+            YesMoviesProvider(),
+            HDTodayProviderTV(),
+            MoviesJoyProvider(),
+            MyflixerToProvider(),
+
+            // All of NSFW sources
+            Javhdicu(),
+            JavSubCo(),
+            OpJavCom(),
+            Vlxx(),
+            Xvideos(),
+            Pornhub(),
+            HentaiLa(),
+            JKHentai(),
+            Hanime(),
+            HahoMoe(),
+            Pandamovie(),
+
+            // No stream links fetched
+            JavTubeWatch(),
+            JavFreeSh(),
+            JavGuru(),
+            HpJavTv(),
+            JavMost(),
+            Javclcom()
         )
 
 
@@ -165,10 +200,6 @@ object APIHolder {
             api.init()
         }
         apiMap = null
-    }
-
-    fun String.capitalize(): String {
-        return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
     }
 
     var apis: List<MainAPI> = arrayListOf()
@@ -344,18 +375,26 @@ object APIHolder {
         val langs = this.getApiProviderLangSettings()
         val allApis = apis.filter { langs.contains(it.lang) }
             .filter { api -> api.hasMainPage || !hasHomePageIsRequired }
-        return if (currentPrefMedia < 1) {
+        return if (currentPrefMedia < 0) {
             allApis
         } else {
             // Filter API depending on preferred media type
-            val listEnumAnime = listOf(TvType.Anime, TvType.AnimeMovie, TvType.OVA)
+            val listEnumAnime = listOf(TvType.Anime, TvType.AnimeMovie, TvType.OVA, TvType.Donghua)
             val listEnumMovieTv =
-                listOf(TvType.Movie, TvType.TvSeries, TvType.Cartoon, TvType.AsianDrama)
+                listOf(TvType.Movie, TvType.TvSeries, TvType.Cartoon, TvType.AsianDrama, TvType.Mirror)
+            val listEnumAnimeMovieTV =
+                listOf(TvType.Anime, TvType.AnimeMovie, TvType.OVA, TvType.Movie, TvType.TvSeries, TvType.Cartoon, TvType.AsianDrama, TvType.Mirror, TvType.Donghua, TvType.Live)
+            val listEnumAnimeMovieTvNSFW =
+                listOf(TvType.Anime, TvType.AnimeMovie, TvType.OVA, TvType.Movie, TvType.TvSeries, TvType.Cartoon, TvType.AsianDrama, TvType.Mirror, TvType.Donghua, TvType.JAV, TvType.Hentai, TvType.XXX, TvType.Live)
             val listEnumDoc = listOf(TvType.Documentary)
+            val listEnumNSFW = listOf(TvType.JAV, TvType.Hentai, TvType.XXX)
             val mediaTypeList = when (currentPrefMedia) {
-                2 -> listEnumAnime
-                3 -> listEnumDoc
-                else -> listEnumMovieTv
+                1 -> listEnumAnimeMovieTvNSFW
+                2 -> listEnumMovieTv
+                3 -> listEnumAnime
+                4 -> listEnumDoc
+                5 -> listEnumNSFW
+                else -> listEnumAnimeMovieTV
             }
             allApis.filter { api -> api.supportedTypes.any { it in mediaTypeList } }
         }
@@ -371,7 +410,7 @@ object APIHolder {
  */
 const val PROVIDER_STATUS_KEY = "PROVIDER_STATUS_KEY"
 const val PROVIDER_STATUS_URL =
-    "https://raw.githubusercontent.com/reduplicated/Cloudstream/master/docs/providers.json"
+    "https://raw.githubusercontent.com/LagradOst/CloudStream-3/master/docs/providers.json"
 const val PROVIDER_STATUS_BETA_ONLY = 3
 const val PROVIDER_STATUS_SLOW = 2
 const val PROVIDER_STATUS_OK = 1
@@ -413,6 +452,10 @@ fun newHomePageResponse(
 
 fun newHomePageResponse(list: HomePageList, hasNext: Boolean? = null): HomePageResponse {
     return HomePageResponse(listOf(list), hasNext = hasNext ?: list.list.isNotEmpty())
+}
+
+fun newHomePageResponse(list: List<HomePageList>, hasNext: Boolean? = null): HomePageResponse {
+    return HomePageResponse(list, hasNext = hasNext ?: list.isNotEmpty())
 }
 
 /**Every provider will **not** have try catch built in, so handle exceptions when calling these functions*/
@@ -564,10 +607,7 @@ fun MainAPI.fixUrlNull(url: String?): String? {
 }
 
 fun MainAPI.fixUrl(url: String): String {
-    if (url.startsWith("http") ||
-        // Do not fix JSON objects when passed as urls.
-        url.startsWith("{\"")
-    ) {
+    if (url.startsWith("http")) {
         return url
     }
     if (url.isEmpty()) {
@@ -645,8 +685,10 @@ enum class ShowStatus {
 }
 
 enum class DubStatus(val id: Int) {
-    Dubbed(1),
     Subbed(0),
+    PremiumSub(1),
+    Dubbed(2),
+    PremiumDub(3),
 }
 
 enum class TvType {
@@ -658,7 +700,12 @@ enum class TvType {
     OVA,
     Torrent,
     Documentary,
+    Mirror,
+    Donghua,
     AsianDrama,
+    JAV,
+    Hentai,
+    XXX,
     Live,
 }
 
@@ -673,7 +720,7 @@ fun TvType.isLiveStream(): Boolean {
 
 // returns if the type has an anime opening
 fun TvType.isAnimeOp(): Boolean {
-    return this == TvType.Anime || this == TvType.OVA
+    return this == TvType.Anime || this == TvType.OVA || this == TvType.Donghua
 }
 
 data class SubtitleFile(val lang: String, val url: String)
@@ -916,7 +963,7 @@ data class MovieSearchResponse(
     override var type: TvType? = null,
 
     override var posterUrl: String? = null,
-    var year: Int? = null,
+    val year: Int? = null,
     override var id: Int? = null,
     override var quality: SearchQuality? = null,
     override var posterHeaders: Map<String, String>? = null,

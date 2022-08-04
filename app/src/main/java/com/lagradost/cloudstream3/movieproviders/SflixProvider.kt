@@ -746,4 +746,3 @@ open class SflixProvider : MainAPI() {
         }
     }
 }
-

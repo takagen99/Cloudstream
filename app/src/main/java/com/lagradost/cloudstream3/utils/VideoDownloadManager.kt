@@ -1153,10 +1153,8 @@ object VideoDownloadManager {
         /*
             Most of the auto generated m3u8 out there have TS of the same size.
             And only the last TS might have a different size.
-
             But oh well, in cases of handmade m3u8 streams this will go all over the place ¯\_(ツ)_/¯
             So ya, this calculates an estimate of how many bytes the file is going to be.
-
             > (bytesDownloaded/tsProgress)*totalTs
          */
 
