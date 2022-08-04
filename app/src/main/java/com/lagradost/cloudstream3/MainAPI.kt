@@ -113,7 +113,6 @@ object APIHolder {
             DubokuProvider(),
             KisskhProvider(),
 
-
             // Metadata providers
             //TmdbProvider(),
             CrossTmdbProvider(),
@@ -234,7 +233,7 @@ object APIHolder {
         return null
     }
 
-    fun getLoadResponseIdFromUrl(url: String, apiName: String): Int {
+    private fun getLoadResponseIdFromUrl(url: String, apiName: String): Int {
         return url.replace(getApiFromName(apiName).mainUrl, "").replace("/", "").hashCode()
     }
 
@@ -304,7 +303,6 @@ object APIHolder {
             this.getString(R.string.search_providers_list_key),
             hashSet
         )?.toHashSet() ?: hashSet
-
         val list = HashSet<String>()
         for (name in set) {
             val api = getApiFromNameNull(name) ?: continue
@@ -693,6 +691,7 @@ enum class ShowStatus {
 }
 
 enum class DubStatus(val id: Int) {
+    None(-1),
     Subbed(0),
     PremiumSub(1),
     Dubbed(2),
@@ -1034,6 +1033,10 @@ interface LoadResponse {
         private val aniListIdPrefix = aniListApi.idPrefix
         var isTrailersEnabled = true
 
+        fun LoadResponse.isMovie() : Boolean {
+            return this.type.isMovieType()
+        }
+
         @JvmName("addActorNames")
         fun LoadResponse.addActors(actors: List<String>?) {
             this.actors = actors?.map { ActorData(Actor(it)) }
@@ -1174,6 +1177,7 @@ data class NextAiring(
 data class SeasonData(
     val season: Int,
     val name: String? = null,
+    val displaySeason : Int? = null, // will use season if null
 )
 
 interface EpisodeResponse {

@@ -112,7 +112,7 @@
     <string name="result_share">Share</string>
     <string name="result_open_in_browser">Open In Browser</string>
     <string name="skip_loading">Skip Loading</string>
-    <string name="loading_chromecast">Loading…</string>
+    <string name="loading">Loading…</string>
 
     <string name="type_watching">Watching</string>
     <string name="type_on_hold">On-Hold</string>
@@ -148,6 +148,8 @@
 
     <string name="app_dubbed_text">Dub</string>
     <string name="app_subbed_text">Sub</string>
+    <string name="app_premium_dubbed_text">Dub (Premium)</string>
+    <string name="app_premium_subbed_text">Sub (Premium)</string>
 
     <string name="popup_delete_file">Delete File</string>
     <string name="popup_play_file">Play File</string>
@@ -288,9 +290,12 @@
     </string>
 
     <string name="season">Season</string>
+    <string name="season_format">%s %d</string>
     <string name="no_season">No Season</string>
     <string name="episode">Episode</string>
     <string name="episodes">Episodes</string>
+    <string name="episodes_range">%d-%d</string>
+    <string name="episode_format" formatted="true">%d %s</string>
     <string name="season_short">S</string>
     <string name="episode_short">E</string>
     <string name="no_episodes_found">No Episodes found</string>
@@ -308,10 +313,6 @@
 
     <string name="status_ongoing">Ongoing</string>
     <string name="status_completed">Completed</string>
-    <string name="dub_status_subbed">Subbed</string>
-    <string name="dub_status_dubbed">Dubbed</string>
-    <string name="dub_status_premium">Dubbed (Premium)</string>
-    <string name="sub_status_premium">Subbed (Premium)</string>
     <string name="status">Status</string>
     <string name="year">Year</string>
     <string name="rating">Rating</string>
