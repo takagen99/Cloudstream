@@ -16,7 +16,6 @@
             android:data="https://github.com/KillerDogeEmpire/CloudStream" />
     </Preference>
 
-
     <Preference
         android:title="App Original"
         android:icon="@drawable/ic_github_logo"
@@ -27,7 +26,16 @@
     </Preference>
 
     <Preference
-        android:title="Novel Reader made my the original devs"
+        android:title="Novel Reader fork made by me"
+        android:icon="@drawable/quick_novel_icon"
+        app:summary="https://github.com/KillerDogeEmpire/QuickNovel">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/KillerDogeEmpire/QuickNovel" />
+    </Preference>
+
+    <Preference
+        android:title="Novel Reader made by the original devs"
         android:icon="@drawable/quick_novel_icon"
         app:summary="https://github.com/LagradOst/QuickNovel">
         <intent
@@ -36,14 +44,13 @@
     </Preference>
 
     <Preference
-        android:title="Novel Reader app by me"
-        android:icon="@drawable/quick_novel_icon"
-        app:summary="https://github.com/KillerDogeEmpire/QuickNovel">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://github.com/KillerDogeEmpire/QuickNovel" />
+        android:title="@string/discord_fork"
+        android:icon="@drawable/ic_baseline_discord_24"
+        app:summary="https://discord.gg/BsqShAMKGW">
+    <intent
+        android:action="android.intent.action.VIEW"
+        android:data="https://discord.gg/BsqShAMKGW" />
     </Preference>
-
     <Preference
         android:title="@string/discord"
         android:icon="@drawable/ic_baseline_discord_24"
