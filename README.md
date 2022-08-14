@@ -27,8 +27,7 @@ I'm using the NSFW providers from JaceKun's Cs3 fork. If they stop working pleas
 ***Screenshots:***
 (All the images are blurred because of DMCA reasons, but are actually not blurred in the app)
 
-<img src="./.github/home.jpg" height="400"/><img src="./.github/search.jpg" height="400"/><img src="./.github/downloads.jpg" height="400"/><img src="./.github/results.jpg" height="400"/>
-<img src="./.github/player.jpg" height="200"/>
+
 
 ***The list of supported languages:***
 * 🇱🇧 Arabic
