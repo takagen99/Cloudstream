@@ -4,7 +4,8 @@ import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.mvvm.logError
 import com.lagradost.cloudstream3.utils.*
 
-class Xvideos : MainAPI() {
+
+open class Xvideos : MainAPI() {
     override var mainUrl = "https://www.xvideos.com"
     override var name = "Xvideos"
     override val hasMainPage = true
@@ -13,40 +14,44 @@ class Xvideos : MainAPI() {
     override val supportedTypes = setOf(TvType.XXX, TvType.JAV, TvType.Hentai)
 
     override val mainPage = mainPageOf(
-        "$mainUrl/new/" to "Main Page",
+        Pair(mainUrl, "Main Page"),
+        Pair("$mainUrl/new/", "New")
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
         val categoryData = request.data
         val categoryName = request.name
-        val pagedLink = if (page > 0) categoryData + page else categoryData
+        val isPaged = categoryData.endsWith('/')
+        val pagedLink = if (isPaged) categoryData + page else categoryData
         try {
-            val soup = app.get(pagedLink).document
-            val home = soup.select("div.thumb-block").mapNotNull {
-                if (it == null) { return@mapNotNull null }
-                val title = it.selectFirst("p.title a")?.text() ?: ""
-                val link = fixUrlNull(it.selectFirst("div.thumb a")?.attr("href")) ?: return@mapNotNull null
-                val image = it.selectFirst("div.thumb a img")?.attr("data-src")
-                MovieSearchResponse(
-                    name = title,
-                    url = link,
-                    apiName = this.name,
-                    type = TvType.XXX,
-                    posterUrl = image,
-                    year = null
-                )
-            }
-            if (home.isNotEmpty()) {
-                return newHomePageResponse(
-                    list = HomePageList(
-                        name = categoryName,
-                        list = home,
-                        isHorizontalImages = true
-                    ),
-                    hasNext = true
-                )
-            } else {
-                throw ErrorLoadingException("No homepage data found!")
+            if (!isPaged && page < 2 || isPaged) {
+                val soup = app.get(pagedLink).document
+                val home = soup.select("div.thumb-block").mapNotNull {
+                    if (it == null) { return@mapNotNull null }
+                    val title = it.selectFirst("p.title a")?.text() ?: ""
+                    val link = fixUrlNull(it.selectFirst("div.thumb a")?.attr("href")) ?: return@mapNotNull null
+                    val image = it.selectFirst("div.thumb a img")?.attr("data-src")
+                    MovieSearchResponse(
+                        name = title,
+                        url = link,
+                        apiName = this.name,
+                        type = TvType.XXX,
+                        posterUrl = image,
+                        year = null
+                    )
+                }
+                if (home.isNotEmpty()) {
+                    return newHomePageResponse(
+                        list = HomePageList(
+                            name = categoryName,
+                            list = home,
+                            isHorizontalImages = true
+                        ),
+                        hasNext = true
+                    )
+                } else {
+                    throw ErrorLoadingException("No homepage data found!")
+                }
             }
         } catch (e: Exception) {
             //e.printStackTrace()
